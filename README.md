@@ -12,9 +12,6 @@
 
 将本项目安装到您的Python环境中
 
-```bash
-pip3 install mumu-api
-```
 
 导入模块
 
