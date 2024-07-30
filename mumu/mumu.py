@@ -20,6 +20,7 @@ from mumu.api.driver.Driver import Driver
 import mumu.config as config
 from mumu.api.network.Network import Network
 from mumu.api.permission.Permission import Permission
+from mumu.api.screen.gui import Gui
 from mumu.api.screen.screen import Screen
 from mumu.api.setting.setting import Setting
 
@@ -213,3 +214,17 @@ class Mumu:
         :return:
         """
         return Adb()
+
+    @property
+    def auto(self) -> Gui:
+        """
+            GUI自动化类
+        :return:
+        """
+
+        try:
+            import cv2
+        except ImportError:
+            raise ImportError("if you want to use autoGui class, you should install opencv-python")
+
+        return Gui()
