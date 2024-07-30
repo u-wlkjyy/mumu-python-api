@@ -20,25 +20,30 @@ def set_operate(operate: Union[str, list]):
     config.OPERATE = operate
 
 
-def run_command(command):
+def run_command(command, mumu=True):
     """
     执行命令
+    :param mumu:
     :param command:
     :return:
     """
     try:
-        command_extend = [config.MUMU_PATH]
+        if mumu:
+            command_extend = [config.MUMU_PATH]
 
-        if config.OPERATE is not None:
-            if isinstance(config.OPERATE, list):
-                command_extend.extend(config.OPERATE)
-            else:
-                command_extend.append(config.OPERATE)
+            if config.OPERATE is not None:
+                if isinstance(config.OPERATE, list):
+                    command_extend.extend(config.OPERATE)
+                else:
+                    command_extend.append(config.OPERATE)
 
-        if config.VM_INDEX is not None:
-            command_extend.extend(['-v', config.VM_INDEX])
+            if config.VM_INDEX is not None:
+                command_extend.extend(['-v', config.VM_INDEX])
 
-        command_extend.extend(command)
+            command_extend.extend(command)
+        else:
+            command_extend = command
+
         result = subprocess.run(command_extend, shell=True, check=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                 encoding='utf-8')
 

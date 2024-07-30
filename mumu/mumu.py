@@ -7,6 +7,7 @@
 import os.path
 from typing import Union
 
+from mumu.api.adb.Adb import Adb
 from mumu.api.core.Core import Core
 from mumu.api.core.app import App
 from mumu.api.core.performance import Performance
@@ -33,7 +34,10 @@ class Mumu:
         if not os.path.exists(self.__mumu_manager):
             raise RuntimeError(f"MuMuManager.exe not found in {self.__mumu_manager}")
 
+        base_path = os.path.dirname(self.__mumu_manager)
+
         config.MUMU_PATH = self.__mumu_manager
+        config.ADB_PATH = os.path.join(base_path, "adb.exe")
 
     def select(self, vm_index: Union[int, list, tuple] = None, *args):
         """
@@ -201,3 +205,11 @@ class Mumu:
         """
 
         return Network()
+
+    @property
+    def adb(self) -> Adb:
+        """
+            ADB类
+        :return:
+        """
+        return Adb()

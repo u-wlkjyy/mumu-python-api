@@ -4,6 +4,7 @@
 # @Author : wlkjyy
 # @File : constant.py
 # @Software: PyCharm
+import os
 import random
 
 
@@ -104,8 +105,8 @@ class PhoneNumber:
 
         return prefix + ''.join(random.choices('0123456789', k=8))
 
-class GPU:
 
+class GPU:
     # 顶配型号
     TOP_MODEL = 'Adreno (TM) 740'
 
@@ -114,3 +115,78 @@ class GPU:
 
     # 低配型号
     LOW_MODEL = 'Adreno (TM) 530'
+
+
+class AndroidKey:
+    # 菜单键
+    KEYCODE_MENU = 1
+
+    # 回到桌面
+    KEYCODE_HOME = 3
+
+    # 返回键
+    KEYCODE_BACK = 4
+
+    # 拨号键
+    KEYCODE_CALL = 5
+
+    # 挂断键
+    KEYCODE_ENDCALL = 6
+
+    # 搜索键
+    KEYCODE_SEARCH = 84
+
+    # 拍照键
+    KEYCODE_CAMERA = 27
+
+    # 相机对焦键
+    KEYCODE_FOCUS = 80
+
+    # 电源键
+    KEYCODE_POWER = 26
+
+    # 通知键
+    KEYCODE_NOTIFICATION = 83
+
+    # 禁音键
+    KEYCODE_MUTE = 91
+
+    # 扬声器静音键
+    KEYCODE_VOLUME_MUTE = 164
+
+    # 音量增加键
+    KEYCODE_VOLUME_UP = 24
+
+    # 音量减小键
+    KEYCODE_VOLUME_DOWN = 25
+
+    # 回车键
+    KEYCODE_ENTER = 66
+
+    # ESC键
+    KEYCODE_ESCAPE = 111
+
+    # 导航键
+    KEYCODE_DPAD_CENTER = 23
+
+    # 向上导航键
+    KEYCODE_DPAD_UP = 19
+
+    # 向下导航键
+    KEYCODE_DPAD_DOWN = 20
+
+    # 向左导航键
+    KEYCODE_DPAD_LEFT = 21
+
+    # 向右导航键
+    KEYCODE_DPAD_RIGHT = 22
+
+    # 退格
+    KEYCODE_DEL = 67
+
+    # TAB
+    KEYCODE_TAB = 61
+
+    # 放大键
+    KEYCODE_ZOOM_IN = 168
+

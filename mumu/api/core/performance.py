@@ -58,7 +58,7 @@ class Performance:
             force_discrete_graphics=enable
         )
 
-    def renderer_strategy(self, auto=True, dis=False,perf=False):
+    def renderer_strategy(self, auto=True, dis=False, perf=False):
         """
             显存使用策略
         :param auto: 自动调优
@@ -78,3 +78,21 @@ class Performance:
             return Setting().set(
                 renderer_strategy='perf'
             )
+
+    def disk_readonly(self, enable: bool = True):
+        """
+            是否为只读系统盘
+        :param enable: 是否只读
+        :return:
+        """
+        return Setting().set(
+            system_disk_readonly=enable
+        )
+
+    def disk_writable(self):
+        """
+            是否为可写系统盘
+        :param enable: 是否可写
+        :return:
+        """
+        return self.disk_readonly(False)

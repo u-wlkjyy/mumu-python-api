@@ -1,105 +1,6 @@
 # Mumu模拟器Python API
 
-- [Mumu模拟器Python API](#mumu模拟器python-api)
-  - [项目介绍](#项目介绍)
-  - [如何使用？](#如何使用)
-    - [设置MuMuManager路径](#设置mumumanager路径)
-    - [模拟器索引说明](#模拟器索引说明)
-    - [选择模拟器](#选择模拟器)
-    - [举个例子](#举个例子)
-    - [注意](#注意)
-  - [API类](#api类)
-    - [驱动类（driver）](#驱动类driver)
-      - [网络桥接驱动（bride）](#网络桥接驱动bride)
-        - [安装桥接驱动（install）](#安装桥接驱动install)
-        - [卸载桥接驱动（uninstall）](#卸载桥接驱动uninstall)
-    - [权限类（permission）](#权限类permission)
-      - [\* ROOT权限（root）](#-root权限root)
-        - [开启ROOT权限（enable）](#开启root权限enable)
-        - [关闭ROOT权限（disable）](#关闭root权限disable)
-    - [电源类（power）](#电源类power)
-      - [启动模拟器（start）](#启动模拟器start)
-      - [关闭模拟器（shutdown|stop）](#关闭模拟器shutdownstop)
-      - [重启模拟器（restart|reboot）](#重启模拟器restartreboot)
-    - [窗口类（window）](#窗口类window)
-      - [显示窗口（show）](#显示窗口show)
-      - [隐藏窗口（hidden）](#隐藏窗口hidden)
-      - [调整窗口大小或位置（layout）](#调整窗口大小或位置layout)
-    - [应用类（app）](#应用类app)
-      - [安装一个应用（install）](#安装一个应用install)
-      - [卸载一个应用（uninstall）](#卸载一个应用uninstall)
-      - [启动模拟器里的应用（launch）](#启动模拟器里的应用launch)
-      - [关闭模拟器里的应用（close）](#关闭模拟器里的应用close)
-      - [\* 判断应用是否存在（exists）](#-判断应用是否存在exists)
-      - [\* 判断应用是否不存在（doesntExists）](#-判断应用是否不存在doesntexists)
-      - [获取已经安装的应用列表（get\_installed）](#获取已经安装的应用列表get_installed)
-      - [\* 获取应用状态（state）](#-获取应用状态state)
-    - [核心类（core）](#核心类core)
-      - [创建模拟器（create）](#创建模拟器create)
-      - [克隆模拟器（clone）](#克隆模拟器clone)
-      - [删除模拟器（delete）](#删除模拟器delete)
-      - [重命名模拟器（rename）](#重命名模拟器rename)
-      - [备份模拟器（export）](#备份模拟器export)
-      - [导入模拟器（import\_）](#导入模拟器import_)
-      - [限制CPU使用率（limit\_cpu）](#限制cpu使用率limit_cpu)
-    - [安卓事件类（androidEvent）](#安卓事件类androidevent)
-      - [屏幕旋转（rotate）](#屏幕旋转rotate)
-      - [返回主页（go\_home）](#返回主页go_home)
-      - [返回（back）](#返回back)
-      - [窗口置顶（top\_most）](#窗口置顶top_most)
-      - [窗口全屏（fullscreen）](#窗口全屏fullscreen)
-      - [摇一摇（shake）](#摇一摇shake)
-      - [截图（screenshot）](#截图screenshot)
-      - [音量增加（volume\_up）](#音量增加volume_up)
-      - [音量减少（volume\_down）](#音量减少volume_down)
-      - [音量静音（volume\_mute）](#音量静音volume_mute)
-      - [任务键（go\_task）](#任务键go_task)
-      - [修改虚拟定位（location）](#修改虚拟定位location)
-      - [修改重力感应（gyro）](#修改重力感应gyro)
-    - [快捷方式类（shortcut）](#快捷方式类shortcut)
-      - [创建桌面快捷方式（create）](#创建桌面快捷方式create)
-      - [删除桌面快捷方式（delete）](#删除桌面快捷方式delete)
-    - [机型类（simulation）](#机型类simulation)
-      - [修改MAC地址（mac\_address）](#修改mac地址mac_address)
-      - [修改IMEI（imei）](#修改imeiimei)
-      - [修改IMSI（imsi）](#修改imsiimsi)
-      - [修改Android ID（android\_id）](#修改android-idandroid_id)
-      - [设置模拟器设备型号（model）](#设置模拟器设备型号model)
-      - [设置模拟器主板品牌（brand）](#设置模拟器主板品牌brand)
-      - [设置模拟器硬件制造商（solution）](#设置模拟器硬件制造商solution)
-      - [设置模拟器手机号码（phone\_number）](#设置模拟器手机号码phone_number)
-      - [设置模拟器GPU型号（gpu\_model）](#设置模拟器gpu型号gpu_model)
-    - [配置类（setting）](#配置类setting)
-      - [获取模拟器配置所有配置项（all）](#获取模拟器配置所有配置项all)
-      - [获取一个或多个配置项（get）](#获取一个或多个配置项get)
-      - [修改一个或多个配置（set）](#修改一个或多个配置set)
-      - [根据JSON文件内容修改配置（set\_by\_json）](#根据json文件内容修改配置set_by_json)
-      - [\*判断某个配置是否等于某个值（equal）](#判断某个配置是否等于某个值equal)
-      - [\*判断某个配置是否不等于某个值（not\_equal）](#判断某个配置是否不等于某个值not_equal)
-      - [\*判断某个配置等于某个值时，修改为另一个值（equal\_then\_set）](#判断某个配置等于某个值时修改为另一个值equal_then_set)
-      - [\*判断某个配置不等于某个值时，修改为另一个值（not\_equal\_then\_set）](#判断某个配置不等于某个值时修改为另一个值not_equal_then_set)
-    - [\*屏幕类（screen）](#屏幕类screen)
-      - [调整模拟器分辨率（resolution）](#调整模拟器分辨率resolution)
-      - [调整模拟器DPI（dpi）](#调整模拟器dpidpi)
-      - [调整模拟器亮度（brightness）](#调整模拟器亮度brightness)
-      - [调整模拟器最大帧率（max\_frame\_rate）](#调整模拟器最大帧率max_frame_rate)
-      - [设置动态调整帧率（dynamic\_adjust\_frame\_rate）](#设置动态调整帧率dynamic_adjust_frame_rate)
-      - [设置垂直同步（vertical\_sync）](#设置垂直同步vertical_sync)
-      - [显示帧率（show\_frame\_rate）](#显示帧率show_frame_rate)
-      - [设置窗口自动旋转（window\_auto\_rotate）](#设置窗口自动旋转window_auto_rotate)
-    - [性能类（performance）](#性能类performance)
-      - [设置CPU和内存（set）](#设置cpu和内存set)
-      - [设置CPU个数（cpu）](#设置cpu个数cpu)
-      - [设置内存大小（memory）](#设置内存大小memory)
-      - [设置强制使用独立显卡（force\_discrete\_graphics）](#设置强制使用独立显卡force_discrete_graphics)
-      - [显存使用策略（renderer\_strategy）](#显存使用策略renderer_strategy)
-    - [\*网络类（network）](#网络类network)
-      - [获取所有可被桥接的网卡（get\_bridge\_card）](#获取所有可被桥接的网卡get_bridge_card)
-      - [设置网络桥接模式（bridge）](#设置网络桥接模式bridge)
-      - [设置网络为NAT模式（nat）](#设置网络为nat模式nat)
-      - [设置桥接模式IP设置方式为DHCP（bridge\_dhcp）](#设置桥接模式ip设置方式为dhcpbridge_dhcp)
-      - [设置桥接模式IP设置方式为静态（bridge\_static）](#设置桥接模式ip设置方式为静态bridge_static)
-
+[TOC]
 
 ## 项目介绍
 
@@ -110,7 +11,6 @@
 ## 如何使用？
 
 将本项目安装到您的Python环境中
-
 
 导入模块
 
@@ -216,7 +116,7 @@ Mumu().driver.bridge.uninstall()
 
 ### 权限类（permission）
 
-####    * ROOT权限（root）
+####           * ROOT权限（root）
 
 ##### 开启ROOT权限（enable）
 
@@ -336,7 +236,7 @@ Mumu().select('your_index').app.launch('com.miHoYo.Yuanshen')
 Mumu().select('your_index').app.close('com.miHoYo.Yuanshen')
 ```
 
-####    * 判断应用是否存在（exists）
+####           * 判断应用是否存在（exists）
 
 该方法接受一个参数，即应用的包名
 
@@ -348,7 +248,7 @@ else:
     print('原神未安装')
 ```
 
-####    * 判断应用是否不存在（doesntExists）
+####           * 判断应用是否不存在（doesntExists）
 
 该方法接受一个参数，即应用的包名
 
@@ -379,7 +279,7 @@ Mumu().select(1).app.get_installed()
 ]
 ```
 
-####    * 获取应用状态（state）
+####           * 获取应用状态（state）
 
 该方法接受一个参数，即应用的包名，返回一个字符串，`running`表示应用正在运行，`stopped`表示应用未运行，`not_installed`表示应用未安装
 
@@ -1042,6 +942,42 @@ Mumu().select(2).setting.not_equal_then_set('window_size_fixed', True, True)
 Mumu().select(2).screen.resolution(800, 600)
 ```
 
+#### 设置为手机分辨率（resolution_mobile）
+
+该方法不需要传入参数，调用该方法前需要先选择一个模拟器，返回bool值，表示是否修改成功。
+
+该方法调整的分辨率为 1080x1920 DPI 为 480
+
+举例：设置索引为2的模拟器的分辨率为手机分辨率
+
+```python
+Mumu().select(2).screen.resolution_mobile()
+```
+
+#### 设置为平板分辨率（resolution_tablet）
+
+该方法不需要传入参数，调用该方法前需要先选择一个模拟器，返回bool值，表示是否修改成功。
+
+该方法调整的分辨率为 1920x1080 DPI 为 280
+
+举例：设置索引为2的模拟器的分辨率为平板分辨率
+
+```python
+Mumu().select(2).screen.resolution_tablet()
+```
+
+#### 设置为超宽屏分辨率（resolution_ultrawide）
+
+该方法不需要传入参数，调用该方法前需要先选择一个模拟器，返回bool值，表示是否修改成功。
+
+该方法调整的分辨率为 3200x1440 DPI 为 400
+
+举例：设置索引为2的模拟器的分辨率为超宽屏分辨率
+
+```python
+Mumu().select(2).screen.resolution_ultrawide()
+```
+
 #### 调整模拟器DPI（dpi）
 
 该方法接受一个参数，即为新的DPI，调用该方法前需要先选择一个模拟器，返回bool值，表示是否修改成功。
@@ -1237,6 +1173,34 @@ Mumu().select(2).performance.renderer_strategy(perf=True)
 Mumu().select(2).performance.renderer_strategy(dis=True)
 ```
 
+#### 设置磁盘类型（disk_readonly）
+该方法接受一个参数，即为`enable`，调用该方法前需要先选择一个模拟器，返回bool值，表示是否修改成功。
+
+`enable`缺省值为`True`，开启时，磁盘类型为（只读系统盘，官方推荐），关闭时，磁盘类型为（可写系统盘）
+
+本方法提供一个助手方法`disk_writable`，用于设置磁盘类型为可写系统盘。
+
+举例：设置索引为2的模拟器的磁盘类型为只读系统盘。
+
+```python
+Mumu().select(2).performance.disk_readonly(True)
+
+# or
+
+Mumu().select(2).performance.disk_readonly()
+```
+
+举例：设置索引为2的模拟器的磁盘类型为可写系统盘
+
+```python
+Mumu().select(2).performance.disk_readonly(False)
+
+# or
+
+Mumu().select(2).performance.disk_writable()
+```
+
+
 ### *网络类（network）
 
 该类提供了模拟器网络操作。
@@ -1309,6 +1273,166 @@ Mumu().select(2).network.bridge_dhcp()
 Mumu().select(2).network.bridge_static('192.168.10.10', '255.255.255.0', '192.168.10.1')
 ```
 
+### ADB类（adb）
 
+该类提供了ADB操作。
 
+#### 获取模拟器的ADB连接信息（get_connect_info）
 
+该无需传入参数，调用该方法前需要先选择一个模拟器，当选择一个模拟器时返回一个元组，包含IP和端口，当选择多个模拟器时返回一个字典，键为索引，值为IP和端口。
+
+如果选择的模拟器无法获取到ADB连接信息，将返回`None,None`
+
+举例：获取索引为2的模拟器的ADB连接信息
+
+```python
+adb_ipaddr, adb_port = Mumu().select(2).adb.get_connect_info()
+```
+
+举例：获取索引为2,4,6的模拟器的ADB连接信息
+
+```python
+adb_info = Mumu().select(2, 4, 6).adb.get_connect_info()
+```
+
+返回示例
+
+```python
+{'2': ('172.30.20.123', 16416), '4': (None, None), '6': (None, None)}
+```
+
+#### 点击屏幕（click）
+
+该方法接受两个参数，分别是X坐标和Y坐标，调用该方法前需要先选择一个模拟器，返回bool值，表示是否点击成功。
+
+举例：点击索引为2的模拟器的坐标为(100, 100)的位置
+
+```python
+Mumu().select(2).adb.click(100, 100)
+```
+
+举例：点击索引为2,4,6的模拟器的坐标为(100, 100)的位置
+
+```python
+Mumu().select(2, 4, 6).adb.click(100, 100)
+```
+
+#### 滑动屏幕（swipe）
+
+该方法提供5个参数，分别是起始X坐标、起始Y坐标、结束X坐标、结束Y坐标和滑动时间，调用该方法前需要先选择一个模拟器，返回bool值，表示是否滑动成功。
+
+举例：滑动索引为2的模拟器的坐标为(100, 100)到(200, 200)的位置，时间为500ms
+
+```python
+Mumu().select(2).adb.swipe(100, 100, 200, 200, 500)
+#  or
+Mumu().select(2).adb.swipe(100, 100, 200, 200)  # 缺省值为500ms
+```
+
+举例：滑动索引为2,4,6的模拟器的坐标为(100, 100)到(200, 200)的位置，时间为500ms
+
+```python
+Mumu().select(2, 4, 6).adb.swipe(100, 100, 200, 200, 500)
+```
+
+#### 文本输入（input_text）
+
+该方法接受一个参数，即为要输入的文本，调用该方法前需要先选择一个模拟器，返回bool值，表示是否输入成功。
+
+举例：在索引为2的模拟器中输入文本`Hello World`
+
+```python
+Mumu().select(2).adb.input_text('Hello World')
+```
+
+举例：在索引为2,4,6的模拟器中输入文本`Hello World`
+
+```python
+Mumu().select(2, 4, 6).adb.input_text('Hello World')
+```
+
+#### 模拟按键（key_event）
+
+该方法接受一个参数，即为要模拟的按键，调用该方法前需要先选择一个模拟器，返回bool值，表示是否模拟成功。
+
+举例：在索引为2的模拟器中模拟按键`HOME`
+
+```python
+Mumu().select(2).adb.key_event(3)
+```
+
+举例：通过本项目提供的按键常量模拟按键`HOME`
+
+```python
+from mumu.constant import AndroidKey
+
+Mumu().select(2).adb.key_event(AndroidKey.KEYCODE_HOME)
+```
+
+举例：在索引为2,4,6的模拟器中模拟音量+
+
+```python
+from mumu.constant import AndroidKey
+
+Mumu().select(2, 4, 6).adb.key_event(AndroidKey.KEYCODE_VOLUME_UP)
+```
+
+#### 上传文件（push）
+
+该方法接受两个参数，分别是本地文件路径和模拟器文件路径，调用该方法前需要先选择一个模拟器，返回bool值，表示是否上传成功。
+
+当上传失败时，会触发一个`warning`警告。
+
+举例：上传索引为2的模拟器的本地文件`C:\test.txt`到模拟器的`/sdcard/test.txt`
+
+```python
+Mumu().select(2).adb.push(r'C:\test.txt', '/sdcard/test.txt')
+```
+
+举例：上传索引为2,4,6的模拟器的本地文件`C:\test.txt`到模拟器的`/sdcard/test.txt`
+
+```python
+Mumu().select(2, 4, 6).adb.push(r'C:\test.txt', '/sdcard/test.txt')
+```
+
+#### 上传文件到Download目录（push_download）
+
+该方法提供两个参数，分别是本地文件路径和模拟器文件名，调用该方法前需要先选择一个模拟器，返回bool值，表示是否上传成功。
+
+当`模拟器文件名`为`None`时，将自动使用本地文件名。
+
+举例：上传索引为2的模拟器的本地文件`C:\test.txt`到模拟器的`Download`目录
+
+```python
+Mumu().select(2).adb.push_download(r'C:\test.txt')
+```
+
+举例：上传索引为2,4,6的模拟器的本地文件`C:\test.txt`到模拟器的`Download`目录，重命名为：`test1.txt`
+
+```python
+Mumu().select(2, 4, 6).adb.push_download(r'C:\test.txt', 'test1.txt')
+```
+
+#### 下载文件（pull）
+
+该方法提供两个参数，分别是模拟器文件路径和本地文件路径，调用该方法前需要先选择一个模拟器，返回bool值，表示是否下载成功。
+
+当下载失败时，会触发一个`warning`警告。
+
+举例：下载索引为2的模拟器的模拟器文件`/sdcard/test.txt`到本地的`C:\test.txt`
+
+```python
+Mumu().select(2).adb.pull('/sdcard/test.txt', r'C:\test.txt')
+```
+
+#### 清理应用数据（clear)
+
+该方法接受一个参数，即为应用包名，调用该方法前需要先选择一个模拟器，返回bool值，表示是否清理成功。
+
+如果包名错误会抛出异常
+
+举例：清理索引为2的模拟器的应用数据
+
+```python
+Mumu().select(2).adb.clear('com.miHoYo.Yuanshen')
+```
