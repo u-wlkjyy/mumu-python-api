@@ -6,10 +6,13 @@
 # @Software: PyCharm
 import os.path
 
-from mumu import utils
+
 
 
 class Shortcut:
+
+    def __init__(self, utils):
+        self.utils = utils
 
     def create(self, name: str, icon: str, package: str) -> bool:
         """
@@ -19,12 +22,12 @@ class Shortcut:
         :param package: 创建自动启动应用的快捷方式
         :return:
         """
-        utils.set_operate('control')
+        self.utils.set_operate('control')
 
         if not os.path.exists(icon):
             raise FileNotFoundError(f'File not found: {icon}')
 
-        ret_code, retval = utils.run_command(['shortcut', 'create', '-n', name, '-i', icon, '-pkg', package])
+        ret_code, retval = self.utils.run_command(['shortcut', 'create', '-n', name, '-i', icon, '-pkg', package])
 
         if ret_code != 0:
             raise RuntimeError(retval)
@@ -36,8 +39,8 @@ class Shortcut:
             删除桌面快捷方式
         :return:
         """
-        utils.set_operate('control')
-        ret_code, retval = utils.run_command(['shortcut', 'delete'])
+        self.utils.set_operate('control')
+        ret_code, retval = self.utils.run_command(['shortcut', 'delete'])
 
         if ret_code != 0:
             raise RuntimeError(retval)

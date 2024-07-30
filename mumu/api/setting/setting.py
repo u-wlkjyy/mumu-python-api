@@ -8,23 +8,26 @@ import json
 import os.path
 from typing import Union
 
-from mumu import utils
+
 
 
 class Setting:
+
+    def __init__(self, utils):
+        self.utils = utils
 
     def all(self, all_writable: bool = False) -> dict:
         """
             获取所有配置项
         :return:
         """
-        utils.set_operate("setting")
+        self.utils.set_operate("setting")
         if all_writable:
             args = ["-aw"]
         else:
             args = ["-a"]
 
-        ret_code, retval = utils.run_command(args)
+        ret_code, retval = self.utils.run_command(args)
         if ret_code == 0:
             return json.loads(retval)
 
@@ -36,12 +39,12 @@ class Setting:
         :param args:
         :return:
         """
-        utils.set_operate("setting")
+        self.utils.set_operate("setting")
         command_args = []
         for arg in args:
             command_args.extend(["-k", arg])
 
-        ret_code, retval = utils.run_command(command_args)
+        ret_code, retval = self.utils.run_command(command_args)
         if ret_code == 0:
             ret = json.loads(retval)
             for key in ret.keys():
@@ -68,7 +71,7 @@ class Setting:
         :param kwargs:
         :return:
         """
-        utils.set_operate("setting")
+        self.utils.set_operate("setting")
         command_args = []
         for key in kwargs.keys():
 
@@ -87,7 +90,7 @@ class Setting:
 
             command_args.extend(["-k", new_key, "-val", str(kwargs[key])])
 
-        ret_code, retval = utils.run_command(command_args)
+        ret_code, retval = self.utils.run_command(command_args)
         if ret_code == 0:
             return True
 
@@ -102,8 +105,8 @@ class Setting:
         if not os.path.exists(file_path):
             raise FileNotFoundError(file_path)
 
-        utils.set_operate("setting")
-        ret_code, retval = utils.run_command(["-p", file_path])
+        self.utils.set_operate("setting")
+        ret_code, retval = self.utils.run_command(["-p", file_path])
 
         if ret_code == 0:
             return True

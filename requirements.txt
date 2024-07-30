@@ -1,0 +1,4 @@
+opencv-python
+numpy==1.24.4
+adbutils==0.4.7
+adbutils==1.2.15

@@ -4,20 +4,176 @@
 # @Author : wlkjyy
 # @File : gui.py
 # @Software: PyCharm
+import copy
+import json
+import time
+
 import cv2
 import numpy
 import collections
+from adbutils import adb
+import threading
+import mumu.config as config
 
 
 class Gui:
-    pass
+
+    def __init__(self, utils):
+        self.utils = utils
+
+    def __connect(self):
+        """
+            获取可用的连接
+        :return:
+        """
+
+        self.utils.set_operate("adb")
+        ret_code, retval = self.utils.run_command([''])
+        if ret_code != 0:
+            return self
+
+        try:
+            data = json.loads(retval)
+        except json.JSONDecodeError:
+            return None, None
+
+        for key, value in data.items():
+            if key == "adb_host" and "adb_port" in data:
+                yield data["adb_host"], data["adb_port"], self.utils.get_vm_id()
+                return
+
+            if 'errcode' in value:
+                continue
+            else:
+                # connect_list.append((value.get("adb_host"), value.get("adb_port")))
+                yield value.get("adb_host"), value.get("adb_port"), key
+
+        return
+
+    def __vm_handle_frame(self, handle, vm_id):
+        while True:
+            if vm_id in config.FRAME_CACHE:
+
+                while True:
+                    frame = config.FRAME_CACHE[vm_id]
+
+                    if frame is not None:
+                        handle(frame, self.utils.get_mumu_root_object().select(vm_id))
+                        time.sleep(0.01)
+
+            else:
+                continue
+
+    def create_handle(self, handle_func):
+        """
+            创建帧处理函数
+        :param handle_func:
+        :return:
+        """
+        try:
+            import scrcpy
+        except:
+            raise RuntimeError(
+                "scrcpy is not installed, please install it first by running 'pip install scrcpy-client'")
+
+        client_list = []
+
+        for (k, v, id) in self.__connect():
+            host = str(k) + ":" + str(v)
+            adb.connect(host)
+            for i in adb.device_list():
+                if i.serial == host:
+                    client = scrcpy.Client(device=i)
+
+                    threading.Thread(target=self.__vm_handle_frame, args=(handle_func, id)).start()
+
+                    def func(vm_id):
+                        def save_frame(frame):
+                            config.FRAME_CACHE[vm_id] = frame
+                            return
+
+                        return save_frame
+
+                    client.add_listener(scrcpy.EVENT_FRAME, func(id))
+                    client_list.append(client)
+        for cli_row in client_list:
+            cli_row.start(threaded=True, daemon_threaded=True)
+
+    def locateOnScreen(self, haystack_frame, needle_image, confidence=0.8, grayscale=None):
+        """
+            在屏幕上查找图片
+        :param haystack_frame: 屏幕帧
+        :param needle_image: 图片
+        :param confidence: 置信度
+        :param grayscale: 灰度值找图
+        :return:
+        """
+        needle_image = _load_cv2(needle_image)
+        haystack_frame = _load_cv2(haystack_frame)
+
+        for r in _locateAll_opencv(needle_image, haystack_frame, confidence=confidence, grayscale=None):
+            return r
+
+        return False
+
+    def center(self, box):
+        """
+            获取中心点
+        :param box: Box
+        :return:
+        """
+        return int(box.left + box.width / 2), int(box.top + box.height / 2)
+
+    def locateCenterOnScreen(self, haystack_frame, needle_image, confidence=0.8, grayscale=None):
+        """
+            在屏幕上查找图片
+        :param haystack_frame: 屏幕帧
+        :param needle_image: 图片
+        :param confidence: 置信度
+        :param grayscale: 灰度值找图
+        :return:
+        """
+        needle_image = _load_cv2(needle_image)
+        haystack_frame = _load_cv2(haystack_frame)
+
+        for r in _locateAll_opencv(needle_image, haystack_frame, confidence=confidence, grayscale=None):
+            return self.center(r)
+
+        return False
+
+    def locateAllOnScreen(self, haystack_frame, needle_image, confidence=0.8, grayscale=None):
+        """
+            在屏幕上查找所有图片
+        :param haystack_frame: 屏幕帧
+        :param needle_image: 图片
+        :param confidence: 置信度
+        :param grayscale: 灰度值找图
+        :return:
+        """
+        arr = []
+        needle_image = _load_cv2(needle_image)
+        haystack_frame = _load_cv2(haystack_frame)
+
+        for r in _locateAll_opencv(needle_image, haystack_frame, confidence=confidence, grayscale=None):
+            arr.append(r)
+
+        return arr
 
 
+
+    def save(self, frame, path):
+        """
+            保存帧
+        :param path: 路径
+        :return:
+        """
+        cv2.imwrite(path, frame)
 
 
 GRAYSCALE_DEFAULT = True
 USE_IMAGE_NOT_FOUND_EXCEPTION = True
 Box = collections.namedtuple('Box', 'left top width height')
+
 
 def _load_cv2(img, grayscale=None):
     """
@@ -106,7 +262,8 @@ def _locateAll_opencv(needleImage, haystackImage, grayscale=None, limit=10000, r
     if len(matches[0]) == 0:
         if USE_IMAGE_NOT_FOUND_EXCEPTION:
             # raise ImageNotFoundException('Could not locate the image (highest confidence = %.3f)' % result.max())
-            print('Could not locate the image (highest confidence = %.3f)' % result.max())
+            # print('Could not locate the image (highest confidence = %.3f)' % result.max())
+            return
         else:
             return
 
@@ -115,4 +272,3 @@ def _locateAll_opencv(needleImage, haystackImage, grayscale=None, limit=10000, r
     matchy = matches[0] * step + region[1]
     for x, y in zip(matchx, matchy):
         yield Box(x, y, needleWidth, needleHeight)
-

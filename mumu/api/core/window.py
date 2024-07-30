@@ -4,18 +4,21 @@
 # @Author : wlkjyy
 # @File : window.py
 # @Software: PyCharm
-from mumu import utils
+
 
 
 class Window:
+
+    def __init__(self, utils):
+        self.utils = utils
 
     def show(self) -> bool:
         """
             显示模拟器(show_window)
         :return:
         """
-        utils.set_operate('control')
-        ret_code, retval = utils.run_command(['show_window'])
+        self.utils.set_operate('control')
+        ret_code, retval = self.utils.run_command(['show_window'])
 
         if ret_code == 0:
             return True
@@ -27,8 +30,8 @@ class Window:
             隐藏模拟器(hide_window)
         :return:
         """
-        utils.set_operate('control')
-        ret_code, retval = utils.run_command(['hide_window'])
+        self.utils.set_operate('control')
+        ret_code, retval = self.utils.run_command(['hide_window'])
 
         if ret_code == 0:
             return True
@@ -44,7 +47,7 @@ class Window:
         :param height:  选择修改窗口的高度
         :return:
         """
-        utils.set_operate('control')
+        self.utils.set_operate('control')
         args = ['layout_window']
 
         if x:
@@ -66,7 +69,7 @@ class Window:
         if len(args) == 1:
             raise RuntimeError('The layout method must have at least one parameter')
 
-        ret_code, retval = utils.run_command(args)
+        ret_code, retval = self.utils.run_command(args)
         if ret_code == 0:
             return True
 

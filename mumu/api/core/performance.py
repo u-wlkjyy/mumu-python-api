@@ -9,6 +9,9 @@ from mumu.api.setting.setting import Setting
 
 class Performance:
 
+    def __init__(self, utils):
+        self.utils = utils
+
     def set(self, cpu_num: int = 1, mem_gb: int = 2):
         """
             设置模拟器性能
@@ -18,7 +21,7 @@ class Performance:
         """
         cpu_num = max(1, min(16, cpu_num))
 
-        return Setting().set(
+        return Setting(self.utils).set(
             performance_mode='custom',
             performance_cpu__custom=cpu_num,
             performance_mem__custom=mem_gb
@@ -32,7 +35,7 @@ class Performance:
         """
         cpu_num = max(1, min(16, cpu_num))
 
-        return Setting().set(
+        return Setting(self.utils).set(
             performance_mode='custom',
             performance_cpu__custom=cpu_num
         )
@@ -43,7 +46,7 @@ class Performance:
         :param mem_gb: 内存大小
         :return:
         """
-        return Setting().set(
+        return Setting(self.utils).set(
             performance_mode='custom',
             performance_mem__custom=mem_gb
         )
@@ -54,7 +57,7 @@ class Performance:
         :param enable: 是否启用
         :return:
         """
-        return Setting().set(
+        return Setting(self.utils).set(
             force_discrete_graphics=enable
         )
 
@@ -67,15 +70,15 @@ class Performance:
         :return:
         """
         if auto:
-            return Setting().set(
+            return Setting(self.utils).set(
                 renderer_strategy='auto'
             )
         elif dis:
-            return Setting().set(
+            return Setting(self.utils).set(
                 renderer_strategy='dis'
             )
         elif perf:
-            return Setting().set(
+            return Setting(self.utils).set(
                 renderer_strategy='perf'
             )
 
@@ -85,7 +88,7 @@ class Performance:
         :param enable: 是否只读
         :return:
         """
-        return Setting().set(
+        return Setting(self.utils).set(
             system_disk_readonly=enable
         )
 

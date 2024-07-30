@@ -4,10 +4,13 @@
 # @Author : wlkjyy
 # @File : bridge.py
 # @Software: PyCharm
-from mumu import utils
+
 
 
 class Bridge:
+    def __init__(self, utils):
+        self.utils = utils
+
     """
         网络桥接驱动
     """
@@ -17,8 +20,8 @@ class Bridge:
             安装网卡桥接驱动
         :return:
         """
-        utils.set_operate(['driver', 'install'])
-        ret_code, ret_val = utils.run_command(['-n', 'lwf'])
+        self.utils.set_operate(['driver', 'install'])
+        ret_code, ret_val = self.utils.run_command(['-n', 'lwf'])
         if ret_code == 0:
             return True
 
@@ -29,8 +32,8 @@ class Bridge:
             卸载网卡桥接驱动
         :return:
         """
-        utils.set_operate(['driver', 'uninstall'])
-        ret_code, ret_val = utils.run_command([])
+        self.utils.set_operate(['driver', 'uninstall'])
+        ret_code, ret_val = self.utils.run_command([])
         if ret_code == 0:
             return True
 

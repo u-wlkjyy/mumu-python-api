@@ -5,10 +5,13 @@
 # @File : develop.py
 # @Software: PyCharm
 
-from mumu import utils
+
 
 
 class AndroidEvent:
+
+    def __init__(self, utils):
+        self.utils = utils
 
     def __action(self, action_name: str) -> bool:
         """
@@ -16,8 +19,8 @@ class AndroidEvent:
         :param action_name: 操作名称
         :return:
         """
-        utils.set_operate("control")
-        ret_code, ret_val = utils.run_command(['tool', 'func', '-n', action_name])
+        self.utils.set_operate("control")
+        ret_code, ret_val = self.utils.run_command(['tool', 'func', '-n', action_name])
         if ret_code == 0:
             return True
 
@@ -98,8 +101,8 @@ class AndroidEvent:
             按下安卓任务键
         :return:
         """
-        utils.set_operate("adb")
-        ret_code, ret_val = utils.run_command(['-c','go_task'])
+        self.utils.set_operate("adb")
+        ret_code, ret_val = self.utils.run_command(['-c','go_task'])
         if ret_code == 0:
             return True
 
@@ -118,8 +121,8 @@ class AndroidEvent:
         if lat < -90 or lat > 90:
             raise ValueError("The latitude range is incorrect")
 
-        utils.set_operate("control")
-        ret_code, ret_val = utils.run_command(['tool', 'location', '-lon', str(lon), '-lat', str(lat)])
+        self.utils.set_operate("control")
+        ret_code, ret_val = self.utils.run_command(['tool', 'location', '-lon', str(lon), '-lat', str(lat)])
         if ret_code == 0:
             return True
 
@@ -133,8 +136,8 @@ class AndroidEvent:
         :param z: z轴
         :return:
         """
-        utils.set_operate("control")
-        ret_code, ret_val = utils.run_command(['tool', 'gyro', '-gx', str(x), '-gy', str(y), '-gz', str(z)])
+        self.utils.set_operate("control")
+        ret_code, ret_val = self.utils.run_command(['tool', 'gyro', '-gx', str(x), '-gy', str(y), '-gz', str(z)])
         if ret_code == 0:
             return True
 

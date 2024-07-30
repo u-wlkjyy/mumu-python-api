@@ -23,14 +23,21 @@ from mumu.api.permission.Permission import Permission
 from mumu.api.screen.gui import Gui
 from mumu.api.screen.screen import Screen
 from mumu.api.setting.setting import Setting
+from mumu.utils import utils
 
 
 class Mumu:
     __mumu_manager = r"D:\Program Files\Netease\MuMu Player 12\shell\MuMuManager.exe"
 
+    __vm_index = None
+
     def __init__(self, mumu_manager_path=None):
         if mumu_manager_path is not None:
-            self.__mumu_manager = mumu_manager_path
+            # 后续创建的实例未设置时使用之前设置的路径
+            if config.MUMU_PATH is None:
+                self.__mumu_manager = mumu_manager_path
+            else:
+                self.__mumu_manager = config.MUMU_PATH
 
         if not os.path.exists(self.__mumu_manager):
             raise RuntimeError(f"MuMuManager.exe not found in {self.__mumu_manager}")
@@ -55,7 +62,7 @@ class Mumu:
         """
 
         if vm_index is None:
-            config.VM_INDEX = 'all'
+            self.__vm_index = 'all'
             return self
 
         if len(args) > 0:
@@ -67,19 +74,22 @@ class Mumu:
             vm_index.extend(args)
 
         if isinstance(vm_index, int):
-            config.VM_INDEX = str(vm_index)
+            self.__vm_index = str(vm_index)
         else:
             vm_index = list(set(vm_index))
-            config.VM_INDEX = ",".join([str(i) for i in vm_index])
+            self.__vm_index = ",".join([str(i) for i in vm_index])
 
         return self
+
+    def generate_utils(self) -> utils:
+        return utils().set_vm_index(self.__vm_index).set_mumu_root_object(self)
 
     def all(self):
         """
             选择所有模拟器
         :return:
         """
-        config.VM_INDEX = 'all'
+        self.__vm_index = 'all'
         return self
 
     @property
@@ -88,7 +98,7 @@ class Mumu:
             模拟器类
         :return:
         """
-        return Core()
+        return Core(self.generate_utils())
 
     @property
     def driver(self) -> Driver:
@@ -99,7 +109,7 @@ class Mumu:
         :return:
         """
 
-        return Driver()
+        return Driver(self.generate_utils())
 
     @property
     def permission(self) -> Permission:
@@ -109,7 +119,7 @@ class Mumu:
             已完成
         :return:
         """
-        return Permission()
+        return Permission(self.generate_utils())
 
     @property
     def power(self):
@@ -119,7 +129,7 @@ class Mumu:
             已完成
         :return:
         """
-        return Power()
+        return Power(self.generate_utils())
 
     @property
     def window(self) -> Window:
@@ -130,7 +140,7 @@ class Mumu:
         :return:
         """
 
-        return Window()
+        return Window(self.generate_utils())
 
     @property
     def app(self) -> App:
@@ -141,7 +151,7 @@ class Mumu:
         :return:
         """
 
-        return App()
+        return App(self.generate_utils())
 
     @property
     def androidEvent(self) -> AndroidEvent:
@@ -151,7 +161,7 @@ class Mumu:
             已完成
         :return:
         """
-        return AndroidEvent()
+        return AndroidEvent(self.generate_utils())
 
     @property
     def shortcut(self) -> Shortcut:
@@ -161,7 +171,7 @@ class Mumu:
             已完成
         :return:
         """
-        return Shortcut()
+        return Shortcut(self.generate_utils())
 
     @property
     def simulation(self) -> Simulation:
@@ -171,7 +181,7 @@ class Mumu:
             已完成
         :return:
         """
-        return Simulation()
+        return Simulation(self.generate_utils())
 
     @property
     def setting(self) -> Setting:
@@ -180,7 +190,7 @@ class Mumu:
         :return:
         """
 
-        return Setting()
+        return Setting(self.generate_utils())
 
     @property
     def screen(self) -> Screen:
@@ -188,7 +198,7 @@ class Mumu:
             屏幕类
         :return:
         """
-        return Screen()
+        return Screen(self.generate_utils())
 
     @property
     def performance(self) -> Performance:
@@ -196,7 +206,7 @@ class Mumu:
             性能类
         :return:
         """
-        return Performance()
+        return Performance(self.generate_utils())
 
     @property
     def network(self):
@@ -205,7 +215,7 @@ class Mumu:
         :return:
         """
 
-        return Network()
+        return Network(self.generate_utils())
 
     @property
     def adb(self) -> Adb:
@@ -213,7 +223,7 @@ class Mumu:
             ADB类
         :return:
         """
-        return Adb()
+        return Adb(self.generate_utils())
 
     @property
     def auto(self) -> Gui:
@@ -227,4 +237,4 @@ class Mumu:
         except ImportError:
             raise ImportError("if you want to use autoGui class, you should install opencv-python")
 
-        return Gui()
+        return Gui(self.generate_utils())

@@ -9,6 +9,9 @@ from mumu.api.setting.setting import Setting
 
 class Network:
 
+    def __init__(self, utils):
+        self.utils = utils
+
     def get_bridge_card(self):
         """
             获取所有网桥适配器
@@ -23,7 +26,7 @@ class Network:
             设置为NAT
         :return:
         """
-        return Setting().set(
+        return Setting(self.utils).set(
             net_bridge_open=False
         )
 
@@ -33,7 +36,7 @@ class Network:
         :param enable: 是否启用
         :return:
         """
-        return Setting().set(
+        return Setting(self.utils).set(
             net_bridge_open=enable,
             net_bridge_card=net_bridge_card
         )
@@ -43,7 +46,7 @@ class Network:
             设置网桥为DHCP
         :return:
         """
-        return Setting().set(
+        return Setting(self.utils).set(
             net_bridge_ip_mode='dhcp'
         )
 
@@ -57,7 +60,7 @@ class Network:
         :param dns2: DNS2
         :return:
         """
-        return Setting().set(
+        return Setting(self.utils).set(
             net_bridge_ip_mode='static',
             net_bridge_ip_addr=ip_addr,
             net_bridge_subnet_mask=subnet_mask,

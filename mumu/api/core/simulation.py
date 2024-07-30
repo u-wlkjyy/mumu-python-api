@@ -6,16 +6,19 @@
 # @Software: PyCharm
 
 
-from mumu import utils
+
 from mumu.constant import MacAddress, IMEI, IMSI, AndroidID, PhoneNumber, GPU
 from mumu.api.setting.setting import Setting
 
 
 class Simulation:
 
+    def __init__(self, utils):
+        self.utils = utils
+
     def __action(self, sk: str, sv: str) -> bool:
-        utils.set_operate('simulation')
-        ret_code, retval = utils.run_command(['-sk', sk, '-sv', sv])
+        self.utils.set_operate('simulation')
+        ret_code, retval = self.utils.run_command(['-sk', sk, '-sv', sv])
         if ret_code == 0:
             return True
         raise RuntimeError(retval)
@@ -110,24 +113,24 @@ class Simulation:
         :return:
         """
         if top_model:
-            return Setting().set(
+            return Setting(self.utils).set(
                 gpu_mode="high",
                 gpu_model__custom=GPU.TOP_MODEL
             )
 
         if middle_model:
-            return Setting().set(
+            return Setting(self.utils).set(
                 gpu_mode="middle",
                 gpu_model__custom=GPU.MIDDLE_MODEL
             )
 
         if low_model:
-            return Setting().set(
+            return Setting(self.utils).set(
                 gpu_mode="low",
                 gpu_model__custom=GPU.LOW_MODEL
             )
 
-        return Setting().set(
+        return Setting(self.utils).set(
             gpu_mode="custom",
             gpu_model__custom=gpu_model_name
         )

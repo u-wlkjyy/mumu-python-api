@@ -10,11 +10,14 @@ import time
 import warnings
 from typing import Union
 
-from mumu import utils
+
 import mumu.config as config
 
 
 class Adb:
+
+    def __init__(self, utils):
+        self.utils = utils
 
     # __connect_list = None
 
@@ -23,8 +26,8 @@ class Adb:
         获取连接信息
         :return: 返回一个包含 ADB 连接信息的字典，或者 (None, None) 如果没有获取到信息。
         """
-        utils.set_operate("adb")
-        ret_code, retval = utils.run_command([''])
+        self.utils.set_operate("adb")
+        ret_code, retval = self.utils.run_command([''])
 
         if ret_code != 0:
             return None, None
@@ -52,8 +55,8 @@ class Adb:
         :param y: 纵坐标
         :return:
         """
-        utils.set_operate('adb')
-        ret_code, retval = utils.run_command(['-c', 'input', 'tap', str(x), str(y)])
+        self.utils.set_operate('adb')
+        ret_code, retval = self.utils.run_command(['-c', 'input', 'tap', str(x), str(y)])
 
         if ret_code == 0:
             return True
@@ -70,8 +73,8 @@ class Adb:
         :param duration: 滑动时间
         :return:
         """
-        utils.set_operate('adb')
-        ret_code, retval = utils.run_command(
+        self.utils.set_operate('adb')
+        ret_code, retval = self.utils.run_command(
             ['-c', 'input', 'swipe', str(from_x), str(from_y), str(to_x), str(to_y), str(duration)])
 
         if ret_code == 0:
@@ -85,8 +88,8 @@ class Adb:
         :param text: 输入的文本
         :return:
         """
-        utils.set_operate('adb')
-        ret_code, retval = utils.run_command(['-c', 'input', 'text', text])
+        self.utils.set_operate('adb')
+        ret_code, retval = self.utils.run_command(['-c', 'input', 'text', text])
 
         if ret_code == 0:
             return True
@@ -99,8 +102,8 @@ class Adb:
         :param key: 键值
         :return:
         """
-        utils.set_operate('adb')
-        ret_code, retval = utils.run_command(['-c', 'input', 'keyevent', str(key)])
+        self.utils.set_operate('adb')
+        ret_code, retval = self.utils.run_command(['-c', 'input', 'keyevent', str(key)])
 
         if ret_code == 0:
             return True
@@ -113,8 +116,8 @@ class Adb:
         :return:
         """
 
-        utils.set_operate("adb")
-        ret_code, retval = utils.run_command([''])
+        self.utils.set_operate("adb")
+        ret_code, retval = self.utils.run_command([''])
 
         if ret_code != 0:
             return self
@@ -152,7 +155,7 @@ class Adb:
             raise FileNotFoundError(f"adb not found in {config.ADB_PATH}")
 
         for (host, port) in self.__connect():
-            ret_code, retval = utils.run_command([config.ADB_PATH, '-s', f"{host}:{port}", 'push', src, path],
+            ret_code, retval = self.utils.run_command([config.ADB_PATH, '-s', f"{host}:{port}", 'push', src, path],
                                                  mumu=False)
 
             if ret_code != 0:
@@ -187,7 +190,7 @@ class Adb:
             raise FileNotFoundError(f"adb not found in {config.ADB_PATH}")
 
         for (host, port) in self.__connect():
-            ret_code, retval = utils.run_command([config.ADB_PATH, '-s', f"{host}:{port}", 'pull', src, path],
+            ret_code, retval = self.utils.run_command([config.ADB_PATH, '-s', f"{host}:{port}", 'pull', src, path],
                                                  mumu=False)
 
             if ret_code != 0:
@@ -201,8 +204,8 @@ class Adb:
         :param package: 应用包名
         :return:
         """
-        utils.set_operate('adb')
-        ret_code, retval = utils.run_command(['-c', 'pm', 'clear', package])
+        self.utils.set_operate('adb')
+        ret_code, retval = self.utils.run_command(['-c', 'pm', 'clear', package])
 
         if ret_code == 0:
             return True

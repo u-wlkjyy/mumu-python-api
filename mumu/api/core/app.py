@@ -7,10 +7,13 @@
 import json
 import os.path
 
-from mumu import utils
+
 
 
 class App:
+
+    def __init__(self, utils):
+        self.utils = utils
 
     def install(self, apk_path: str = None) -> bool:
         """
@@ -23,9 +26,9 @@ class App:
 
         if not os.path.isfile(apk_path):
             raise FileNotFoundError(f"apk_path:{apk_path} is not a file")
-        utils.set_operate('control')
+        self.utils.set_operate('control')
 
-        ret_code, retval = utils.run_command(['app', 'install', '-apk', apk_path])
+        ret_code, retval = self.utils.run_command(['app', 'install', '-apk', apk_path])
 
         if ret_code == 0:
             return True
@@ -38,8 +41,8 @@ class App:
         :param package: 选择要卸载的应用包名
         :return:
         """
-        utils.set_operate('control')
-        ret_code, retval = utils.run_command(['app', 'uninstall', '-pkg', package])
+        self.utils.set_operate('control')
+        ret_code, retval = self.utils.run_command(['app', 'uninstall', '-pkg', package])
 
         if ret_code == 0:
             return True
@@ -52,8 +55,8 @@ class App:
         :param package: 选择要启动的应用包名
         :return:
         """
-        utils.set_operate('control')
-        ret_code, retval = utils.run_command(['app', 'launch', '-pkg', package])
+        self.utils.set_operate('control')
+        ret_code, retval = self.utils.run_command(['app', 'launch', '-pkg', package])
 
         if ret_code == 0:
             return True
@@ -66,8 +69,8 @@ class App:
         :param package: 选择要关闭的应用包名
         :return:
         """
-        utils.set_operate('control')
-        ret_code, retval = utils.run_command(['app', 'close', '-pkg', package])
+        self.utils.set_operate('control')
+        ret_code, retval = self.utils.run_command(['app', 'close', '-pkg', package])
 
         if ret_code == 0:
             return True
@@ -79,8 +82,8 @@ class App:
             获取已安装的应用(get_installed)
         :return:
         """
-        utils.set_operate('control')
-        ret_code, retval = utils.run_command(['app', 'info','-i'])
+        self.utils.set_operate('control')
+        ret_code, retval = self.utils.run_command(['app', 'info','-i'])
 
         if ret_code != 0:
             raise RuntimeError(retval)
@@ -105,8 +108,8 @@ class App:
         :param package: 选择要判断的应用包名
         :return:
         """
-        utils.set_operate('control')
-        ret_code, retval = utils.run_command(['app', 'info', '-pkg', package])
+        self.utils.set_operate('control')
+        ret_code, retval = self.utils.run_command(['app', 'info', '-pkg', package])
 
         if ret_code != 0:
             raise RuntimeError(retval)
@@ -129,8 +132,8 @@ class App:
         :param package: 选择要获取的应用包名
         :return:
         """
-        utils.set_operate('control')
-        ret_code, retval = utils.run_command(['app', 'info', '-pkg', package])
+        self.utils.set_operate('control')
+        ret_code, retval = self.utils.run_command(['app', 'info', '-pkg', package])
 
         if ret_code != 0:
             raise RuntimeError(retval)

@@ -5,18 +5,21 @@
 # @File : root.py
 # @Software: PyCharm
 import mumu.config as config
-from mumu import utils
+
 
 
 class Root:
+
+    def __init__(self, utils):
+        self.utils = utils
 
     def disable(self):
         """
             关闭模拟器Root权限
         :return:
         """
-        utils.set_operate("setting")
-        ret_code, ret_val = utils.run_command(['-k', 'root_permission', '-val', 'false'])
+        self.utils.set_operate("setting")
+        ret_code, ret_val = self.utils.run_command(['-k', 'root_permission', '-val', 'false'])
 
         if ret_code != 0:
             raise RuntimeError(ret_val)
@@ -28,8 +31,8 @@ class Root:
             启用模拟器Root权限
         :return:
         """
-        utils.set_operate("setting")
-        ret_code, ret_val = utils.run_command(['-k', 'root_permission', '-val', 'true'])
+        self.utils.set_operate("setting")
+        ret_code, ret_val = self.utils.run_command(['-k', 'root_permission', '-val', 'true'])
 
         if ret_code != 0:
             raise RuntimeError(ret_val)

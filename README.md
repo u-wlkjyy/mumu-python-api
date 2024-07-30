@@ -1,121 +1,120 @@
 # Mumu模拟器Python API
 
 - [Mumu模拟器Python API](#mumu模拟器python-api)
-  - [项目介绍](#项目介绍)
-  - [如何使用？](#如何使用)
-    - [设置MuMuManager路径](#设置mumumanager路径)
-    - [模拟器索引说明](#模拟器索引说明)
-    - [选择模拟器](#选择模拟器)
-    - [举个例子](#举个例子)
-    - [注意](#注意)
-  - [API类](#api类)
-    - [驱动类（driver）](#驱动类driver)
-      - [网络桥接驱动（bride）](#网络桥接驱动bride)
-        - [安装桥接驱动（install）](#安装桥接驱动install)
-        - [卸载桥接驱动（uninstall）](#卸载桥接驱动uninstall)
-    - [权限类（permission）](#权限类permission)
-      - [\* ROOT权限（root）](#-root权限root)
-        - [开启ROOT权限（enable）](#开启root权限enable)
-        - [关闭ROOT权限（disable）](#关闭root权限disable)
-    - [电源类（power）](#电源类power)
-      - [启动模拟器（start）](#启动模拟器start)
-      - [关闭模拟器（shutdown|stop）](#关闭模拟器shutdownstop)
-      - [重启模拟器（restart|reboot）](#重启模拟器restartreboot)
-    - [窗口类（window）](#窗口类window)
-      - [显示窗口（show）](#显示窗口show)
-      - [隐藏窗口（hidden）](#隐藏窗口hidden)
-      - [调整窗口大小或位置（layout）](#调整窗口大小或位置layout)
-    - [应用类（app）](#应用类app)
-      - [安装一个应用（install）](#安装一个应用install)
-      - [卸载一个应用（uninstall）](#卸载一个应用uninstall)
-      - [启动模拟器里的应用（launch）](#启动模拟器里的应用launch)
-      - [关闭模拟器里的应用（close）](#关闭模拟器里的应用close)
-      - [\* 判断应用是否存在（exists）](#-判断应用是否存在exists)
-      - [\* 判断应用是否不存在（doesntExists）](#-判断应用是否不存在doesntexists)
-      - [获取已经安装的应用列表（get\_installed）](#获取已经安装的应用列表get_installed)
-      - [\* 获取应用状态（state）](#-获取应用状态state)
-    - [核心类（core）](#核心类core)
-      - [创建模拟器（create）](#创建模拟器create)
-      - [克隆模拟器（clone）](#克隆模拟器clone)
-      - [删除模拟器（delete）](#删除模拟器delete)
-      - [重命名模拟器（rename）](#重命名模拟器rename)
-      - [备份模拟器（export）](#备份模拟器export)
-      - [导入模拟器（import\_）](#导入模拟器import_)
-      - [限制CPU使用率（limit\_cpu）](#限制cpu使用率limit_cpu)
-    - [安卓事件类（androidEvent）](#安卓事件类androidevent)
-      - [屏幕旋转（rotate）](#屏幕旋转rotate)
-      - [返回主页（go\_home）](#返回主页go_home)
-      - [返回（back）](#返回back)
-      - [窗口置顶（top\_most）](#窗口置顶top_most)
-      - [窗口全屏（fullscreen）](#窗口全屏fullscreen)
-      - [摇一摇（shake）](#摇一摇shake)
-      - [截图（screenshot）](#截图screenshot)
-      - [音量增加（volume\_up）](#音量增加volume_up)
-      - [音量减少（volume\_down）](#音量减少volume_down)
-      - [音量静音（volume\_mute）](#音量静音volume_mute)
-      - [任务键（go\_task）](#任务键go_task)
-      - [修改虚拟定位（location）](#修改虚拟定位location)
-      - [修改重力感应（gyro）](#修改重力感应gyro)
-    - [快捷方式类（shortcut）](#快捷方式类shortcut)
-      - [创建桌面快捷方式（create）](#创建桌面快捷方式create)
-      - [删除桌面快捷方式（delete）](#删除桌面快捷方式delete)
-    - [机型类（simulation）](#机型类simulation)
-      - [修改MAC地址（mac\_address）](#修改mac地址mac_address)
-      - [修改IMEI（imei）](#修改imeiimei)
-      - [修改IMSI（imsi）](#修改imsiimsi)
-      - [修改Android ID（android\_id）](#修改android-idandroid_id)
-      - [设置模拟器设备型号（model）](#设置模拟器设备型号model)
-      - [设置模拟器主板品牌（brand）](#设置模拟器主板品牌brand)
-      - [设置模拟器硬件制造商（solution）](#设置模拟器硬件制造商solution)
-      - [设置模拟器手机号码（phone\_number）](#设置模拟器手机号码phone_number)
-      - [设置模拟器GPU型号（gpu\_model）](#设置模拟器gpu型号gpu_model)
-    - [配置类（setting）](#配置类setting)
-      - [获取模拟器配置所有配置项（all）](#获取模拟器配置所有配置项all)
-      - [获取一个或多个配置项（get）](#获取一个或多个配置项get)
-      - [修改一个或多个配置（set）](#修改一个或多个配置set)
-      - [根据JSON文件内容修改配置（set\_by\_json）](#根据json文件内容修改配置set_by_json)
-      - [\*判断某个配置是否等于某个值（equal）](#判断某个配置是否等于某个值equal)
-      - [\*判断某个配置是否不等于某个值（not\_equal）](#判断某个配置是否不等于某个值not_equal)
-      - [\*判断某个配置等于某个值时，修改为另一个值（equal\_then\_set）](#判断某个配置等于某个值时修改为另一个值equal_then_set)
-      - [\*判断某个配置不等于某个值时，修改为另一个值（not\_equal\_then\_set）](#判断某个配置不等于某个值时修改为另一个值not_equal_then_set)
-    - [\*屏幕类（screen）](#屏幕类screen)
-      - [调整模拟器分辨率（resolution）](#调整模拟器分辨率resolution)
-      - [设置为手机分辨率（resolution\_mobile）](#设置为手机分辨率resolution_mobile)
-      - [设置为平板分辨率（resolution\_tablet）](#设置为平板分辨率resolution_tablet)
-      - [设置为超宽屏分辨率（resolution\_ultrawide）](#设置为超宽屏分辨率resolution_ultrawide)
-      - [调整模拟器DPI（dpi）](#调整模拟器dpidpi)
-      - [调整模拟器亮度（brightness）](#调整模拟器亮度brightness)
-      - [调整模拟器最大帧率（max\_frame\_rate）](#调整模拟器最大帧率max_frame_rate)
-      - [设置动态调整帧率（dynamic\_adjust\_frame\_rate）](#设置动态调整帧率dynamic_adjust_frame_rate)
-      - [设置垂直同步（vertical\_sync）](#设置垂直同步vertical_sync)
-      - [显示帧率（show\_frame\_rate）](#显示帧率show_frame_rate)
-      - [设置窗口自动旋转（window\_auto\_rotate）](#设置窗口自动旋转window_auto_rotate)
-    - [性能类（performance）](#性能类performance)
-      - [设置CPU和内存（set）](#设置cpu和内存set)
-      - [设置CPU个数（cpu）](#设置cpu个数cpu)
-      - [设置内存大小（memory）](#设置内存大小memory)
-      - [设置强制使用独立显卡（force\_discrete\_graphics）](#设置强制使用独立显卡force_discrete_graphics)
-      - [显存使用策略（renderer\_strategy）](#显存使用策略renderer_strategy)
-      - [设置磁盘类型（disk\_readonly）](#设置磁盘类型disk_readonly)
-    - [\*网络类（network）](#网络类network)
-      - [获取所有可被桥接的网卡（get\_bridge\_card）](#获取所有可被桥接的网卡get_bridge_card)
-      - [设置网络桥接模式（bridge）](#设置网络桥接模式bridge)
-      - [设置网络为NAT模式（nat）](#设置网络为nat模式nat)
-      - [设置桥接模式IP设置方式为DHCP（bridge\_dhcp）](#设置桥接模式ip设置方式为dhcpbridge_dhcp)
-      - [设置桥接模式IP设置方式为静态（bridge\_static）](#设置桥接模式ip设置方式为静态bridge_static)
-    - [ADB类（adb）](#adb类adb)
-      - [获取模拟器的ADB连接信息（get\_connect\_info）](#获取模拟器的adb连接信息get_connect_info)
-      - [点击屏幕（click）](#点击屏幕click)
-      - [滑动屏幕（swipe）](#滑动屏幕swipe)
-      - [文本输入（input\_text）](#文本输入input_text)
-      - [模拟按键（key\_event）](#模拟按键key_event)
-      - [上传文件（push）](#上传文件push)
-      - [上传文件到Download目录（push\_download）](#上传文件到download目录push_download)
-      - [下载文件（pull）](#下载文件pull)
-      - [清理应用数据（clear)](#清理应用数据clear)
-    - [GUI自动化类（auto）](#gui自动化类auto)
-  - [支持本项目](#支持本项目)
-
+    - [项目介绍](#项目介绍)
+    - [如何使用？](#如何使用)
+        - [设置MuMuManager路径](#设置mumumanager路径)
+        - [模拟器索引说明](#模拟器索引说明)
+        - [选择模拟器](#选择模拟器)
+        - [举个例子](#举个例子)
+        - [注意](#注意)
+    - [API类](#api类)
+        - [驱动类（driver）](#驱动类driver)
+            - [网络桥接驱动（bride）](#网络桥接驱动bride)
+                - [安装桥接驱动（install）](#安装桥接驱动install)
+                - [卸载桥接驱动（uninstall）](#卸载桥接驱动uninstall)
+        - [权限类（permission）](#权限类permission)
+            - [\* ROOT权限（root）](#-root权限root)
+                - [开启ROOT权限（enable）](#开启root权限enable)
+                - [关闭ROOT权限（disable）](#关闭root权限disable)
+        - [电源类（power）](#电源类power)
+            - [启动模拟器（start）](#启动模拟器start)
+            - [关闭模拟器（shutdown|stop）](#关闭模拟器shutdownstop)
+            - [重启模拟器（restart|reboot）](#重启模拟器restartreboot)
+        - [窗口类（window）](#窗口类window)
+            - [显示窗口（show）](#显示窗口show)
+            - [隐藏窗口（hidden）](#隐藏窗口hidden)
+            - [调整窗口大小或位置（layout）](#调整窗口大小或位置layout)
+        - [应用类（app）](#应用类app)
+            - [安装一个应用（install）](#安装一个应用install)
+            - [卸载一个应用（uninstall）](#卸载一个应用uninstall)
+            - [启动模拟器里的应用（launch）](#启动模拟器里的应用launch)
+            - [关闭模拟器里的应用（close）](#关闭模拟器里的应用close)
+            - [\* 判断应用是否存在（exists）](#-判断应用是否存在exists)
+            - [\* 判断应用是否不存在（doesntExists）](#-判断应用是否不存在doesntexists)
+            - [获取已经安装的应用列表（get\_installed）](#获取已经安装的应用列表get_installed)
+            - [\* 获取应用状态（state）](#-获取应用状态state)
+        - [核心类（core）](#核心类core)
+            - [创建模拟器（create）](#创建模拟器create)
+            - [克隆模拟器（clone）](#克隆模拟器clone)
+            - [删除模拟器（delete）](#删除模拟器delete)
+            - [重命名模拟器（rename）](#重命名模拟器rename)
+            - [备份模拟器（export）](#备份模拟器export)
+            - [导入模拟器（import\_）](#导入模拟器import_)
+            - [限制CPU使用率（limit\_cpu）](#限制cpu使用率limit_cpu)
+        - [安卓事件类（androidEvent）](#安卓事件类androidevent)
+            - [屏幕旋转（rotate）](#屏幕旋转rotate)
+            - [返回主页（go\_home）](#返回主页go_home)
+            - [返回（back）](#返回back)
+            - [窗口置顶（top\_most）](#窗口置顶top_most)
+            - [窗口全屏（fullscreen）](#窗口全屏fullscreen)
+            - [摇一摇（shake）](#摇一摇shake)
+            - [截图（screenshot）](#截图screenshot)
+            - [音量增加（volume\_up）](#音量增加volume_up)
+            - [音量减少（volume\_down）](#音量减少volume_down)
+            - [音量静音（volume\_mute）](#音量静音volume_mute)
+            - [任务键（go\_task）](#任务键go_task)
+            - [修改虚拟定位（location）](#修改虚拟定位location)
+            - [修改重力感应（gyro）](#修改重力感应gyro)
+        - [快捷方式类（shortcut）](#快捷方式类shortcut)
+            - [创建桌面快捷方式（create）](#创建桌面快捷方式create)
+            - [删除桌面快捷方式（delete）](#删除桌面快捷方式delete)
+        - [机型类（simulation）](#机型类simulation)
+            - [修改MAC地址（mac\_address）](#修改mac地址mac_address)
+            - [修改IMEI（imei）](#修改imeiimei)
+            - [修改IMSI（imsi）](#修改imsiimsi)
+            - [修改Android ID（android\_id）](#修改android-idandroid_id)
+            - [设置模拟器设备型号（model）](#设置模拟器设备型号model)
+            - [设置模拟器主板品牌（brand）](#设置模拟器主板品牌brand)
+            - [设置模拟器硬件制造商（solution）](#设置模拟器硬件制造商solution)
+            - [设置模拟器手机号码（phone\_number）](#设置模拟器手机号码phone_number)
+            - [设置模拟器GPU型号（gpu\_model）](#设置模拟器gpu型号gpu_model)
+        - [配置类（setting）](#配置类setting)
+            - [获取模拟器配置所有配置项（all）](#获取模拟器配置所有配置项all)
+            - [获取一个或多个配置项（get）](#获取一个或多个配置项get)
+            - [修改一个或多个配置（set）](#修改一个或多个配置set)
+            - [根据JSON文件内容修改配置（set\_by\_json）](#根据json文件内容修改配置set_by_json)
+            - [\*判断某个配置是否等于某个值（equal）](#判断某个配置是否等于某个值equal)
+            - [\*判断某个配置是否不等于某个值（not\_equal）](#判断某个配置是否不等于某个值not_equal)
+            - [\*判断某个配置等于某个值时，修改为另一个值（equal\_then\_set）](#判断某个配置等于某个值时修改为另一个值equal_then_set)
+            - [\*判断某个配置不等于某个值时，修改为另一个值（not\_equal\_then\_set）](#判断某个配置不等于某个值时修改为另一个值not_equal_then_set)
+        - [\*屏幕类（screen）](#屏幕类screen)
+            - [调整模拟器分辨率（resolution）](#调整模拟器分辨率resolution)
+            - [设置为手机分辨率（resolution\_mobile）](#设置为手机分辨率resolution_mobile)
+            - [设置为平板分辨率（resolution\_tablet）](#设置为平板分辨率resolution_tablet)
+            - [设置为超宽屏分辨率（resolution\_ultrawide）](#设置为超宽屏分辨率resolution_ultrawide)
+            - [调整模拟器DPI（dpi）](#调整模拟器dpidpi)
+            - [调整模拟器亮度（brightness）](#调整模拟器亮度brightness)
+            - [调整模拟器最大帧率（max\_frame\_rate）](#调整模拟器最大帧率max_frame_rate)
+            - [设置动态调整帧率（dynamic\_adjust\_frame\_rate）](#设置动态调整帧率dynamic_adjust_frame_rate)
+            - [设置垂直同步（vertical\_sync）](#设置垂直同步vertical_sync)
+            - [显示帧率（show\_frame\_rate）](#显示帧率show_frame_rate)
+            - [设置窗口自动旋转（window\_auto\_rotate）](#设置窗口自动旋转window_auto_rotate)
+        - [性能类（performance）](#性能类performance)
+            - [设置CPU和内存（set）](#设置cpu和内存set)
+            - [设置CPU个数（cpu）](#设置cpu个数cpu)
+            - [设置内存大小（memory）](#设置内存大小memory)
+            - [设置强制使用独立显卡（force\_discrete\_graphics）](#设置强制使用独立显卡force_discrete_graphics)
+            - [显存使用策略（renderer\_strategy）](#显存使用策略renderer_strategy)
+            - [设置磁盘类型（disk\_readonly）](#设置磁盘类型disk_readonly)
+        - [\*网络类（network）](#网络类network)
+            - [获取所有可被桥接的网卡（get\_bridge\_card）](#获取所有可被桥接的网卡get_bridge_card)
+            - [设置网络桥接模式（bridge）](#设置网络桥接模式bridge)
+            - [设置网络为NAT模式（nat）](#设置网络为nat模式nat)
+            - [设置桥接模式IP设置方式为DHCP（bridge\_dhcp）](#设置桥接模式ip设置方式为dhcpbridge_dhcp)
+            - [设置桥接模式IP设置方式为静态（bridge\_static）](#设置桥接模式ip设置方式为静态bridge_static)
+        - [ADB类（adb）](#adb类adb)
+            - [获取模拟器的ADB连接信息（get\_connect\_info）](#获取模拟器的adb连接信息get_connect_info)
+            - [点击屏幕（click）](#点击屏幕click)
+            - [滑动屏幕（swipe）](#滑动屏幕swipe)
+            - [文本输入（input\_text）](#文本输入input_text)
+            - [模拟按键（key\_event）](#模拟按键key_event)
+            - [上传文件（push）](#上传文件push)
+            - [上传文件到Download目录（push\_download）](#上传文件到download目录push_download)
+            - [下载文件（pull）](#下载文件pull)
+            - [清理应用数据（clear)](#清理应用数据clear)
+        - [GUI自动化类（auto）](#gui自动化类auto)
+    - [支持本项目](#支持本项目)
 
 ## 项目介绍
 
@@ -231,7 +230,7 @@ Mumu().driver.bridge.uninstall()
 
 ### 权限类（permission）
 
-####            * ROOT权限（root）
+####               * ROOT权限（root）
 
 ##### 开启ROOT权限（enable）
 
@@ -351,7 +350,7 @@ Mumu().select('your_index').app.launch('com.miHoYo.Yuanshen')
 Mumu().select('your_index').app.close('com.miHoYo.Yuanshen')
 ```
 
-####            * 判断应用是否存在（exists）
+####               * 判断应用是否存在（exists）
 
 该方法接受一个参数，即应用的包名
 
@@ -363,7 +362,7 @@ else:
     print('原神未安装')
 ```
 
-####            * 判断应用是否不存在（doesntExists）
+####               * 判断应用是否不存在（doesntExists）
 
 该方法接受一个参数，即应用的包名
 
@@ -394,7 +393,7 @@ Mumu().select(1).app.get_installed()
 ]
 ```
 
-####            * 获取应用状态（state）
+####               * 获取应用状态（state）
 
 该方法接受一个参数，即应用的包名，返回一个字符串，`running`表示应用正在运行，`stopped`表示应用未运行，`not_installed`表示应用未安装
 
@@ -1558,11 +1557,166 @@ Mumu().select(2).adb.clear('com.miHoYo.Yuanshen')
 
 先决条件：需要安装`opencv-python`库，可以通过`pip install opencv-python`安装。
 
-待续..
+如果希望使用本项目自带的投屏功能，需要安装`scrcpy`，可以通过`pip install scrcpy-client`安装。
+
+#### 处理模拟器实时帧（create_handle）
+
+该方法接受一个参数`handle`，传入一个方法，用于处理模拟器的帧。
+
+该方法基于`scrcpy`实现，如果您的应用对该软件有限制，请勿使用。
+
+使用该方法，会自动创建`2`个子线程，一个用于接收模拟器的帧，一个用于处理帧。
+
+`handle`方法包含两个参数`frame`和`mumu`，分别表示帧和当前模拟器对象。
+
+`frame`为`numpy`数组，可以直接使用`opencv`的方法处理。
+`mumu`为当前模拟器对象，仅选中了当前模拟器。
+
+举例：处理索引为2的模拟器的帧
+
+```python
+def handle(frame, mumu):
+    # do something
+    print('接收到模拟器：', mumu.core.utils.get_vm_id(), '的帧')
+
+
+Mumu().select(2).auto.create_handle(handle)
+```
+
+举例：处理索引为2,4,6的模拟器的帧
+
+```python
+def handle(frame, mumu):
+    # do something
+    print('接收到模拟器：', mumu.core.utils.get_vm_id(), '的帧')
+
+
+Mumu().select(2, 4, 6).auto.create_handle(handle)
+```
+
+#### 保存模拟器实时帧（save）
+
+该方法接受两个参数，分别为`frame`和`path`，用于保存模拟器的帧。
+
+举例：保存帧到`C:\test.png`
+
+```python
+def handle(frame, mumu):
+    mumu.auto.save(frame, r'C:\test.png')
+
+
+Mumu().select(2).auto.create_handle(handle)
+```
+
+举例：保存索引为3的模拟器的帧到`C:\test.png`
+
+```python
+def handle(frame, mumu):
+    if mumu.core.utils.get_vm_id() == '3':
+        mumu.auto.save(frame, r'C:\test.png')
+
+
+Mumu().select(2, 3).auto.create_handle(handle)
+```
+
+#### 在帧中查找第一个图片（locateOnScreen）
+
+该方法接受4个参数，分别为`haystack`、`needle`、`confidence`和`grayscale`，用于在帧中查找图片。
+
+`confidence`为相似度，范围为0-1，缺省值为0.8
+
+`grayscale`为是否使用灰度查找，缺省值为`False
+
+举例：在帧中查找图片`C:\test.png`
+
+```python
+def handle(frame, mumu):
+    # do something
+    print('接收到模拟器：', mumu.core.utils.get_vm_id(), '的帧')
+    pos = mumu.auto.locateOnScreen(frame, r'C:\test.png')
+    if pos:
+        print('找到图片：', pos)
+    else:
+        print('未找到图片')
+```
+
+#### 在帧中查找第一张图片的中心点（locateCenterOnScreen）
+
+该方法接受4个参数，分别为`haystack`、`needle`、`confidence`和`grayscale`，用于在帧中查找图片。
+
+`confidence`为相似度，范围为0-1，缺省值为0.8
+
+`grayscale`为是否使用灰度查找，缺省值为`False
+
+```python
+def handle(frame, mumu):
+    # do something
+    print('接收到模拟器：', mumu.core.utils.get_vm_id(), '的帧')
+    pos = mumu.auto.locateCenterOnScreen(frame, r'C:\test.png')
+    if pos:
+        print('找到图片中心点：', pos)
+    else:
+        print('未找到图片')
+
+```
+
+#### 在帧中查找所有图片（locateAllOnScreen）
+
+该方法接受4个参数，分别为`haystack`、`needle`、`confidence`和`grayscale`，用于在帧中查找图片。
+
+`confidence`为相似度，范围为0-1，缺省值为0.8
+`grayscale`为是否使用灰度查找，缺省值为`False
+
+```python
+def handle(frame, mumu):
+    # do something
+    print('接收到模拟器：', mumu.core.utils.get_vm_id(), '的帧')
+    pos = mumu.auto.locateAllOnScreen(frame, r'C:\test.png')
+    if pos:
+        print('找到图片：', pos)
+    else:
+        print('未找到图片')
+
+```
+
+#### 获取Box的中心点（center）
+
+该方法接受一个参数，即为`box`，用于获取Box的中心点，返回x和y
+
+`box`为一个元组，包含4个元素，分别为左上角x、左上角y、右下角x、右下角y
+
+```python
+def handle(frame, mumu):
+    # do something
+    print('接收到模拟器：', mumu.core.utils.get_vm_id(), '的帧')
+    pos = mumu.auto.locateOnScreen(frame, r'C:\test.png')
+    if pos:
+        print('找到图片：', pos)
+        x, y = mumu.auto.center(pos)
+        print('中心点：', x, y)
+    else:
+        print('未找到图片')
+
+```
+
+#### 实战举例
+
+监听模拟器3的帧，当帧中出现`test.png`时，返回`找到了`，并返回当前时间和模拟器ID，然后返回到桌面。
+
+```python
+def handle(frame, mumu: Mumu):
+    if mumu.auto.locateOnScreen(frame, './test.png', confidence=0.75, grayscale=True):
+        print("找到了", time.time(), '在模拟器', mumu.core.utils.get_vm_id())
+        mumu.androidEvent.go_home()
+
+
+Mumu().select(3).auto.create_handle(handle)
+
+```
 
 ## 支持本项目
 
-作者：wlkjyy 
+作者：wlkjyy
 
 Mail：<wlkjyy@vip.qq.com>
 

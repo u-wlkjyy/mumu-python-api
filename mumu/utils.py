@@ -11,51 +11,81 @@ from typing import Union, List
 import mumu.config as config
 
 
-def set_operate(operate: Union[str, list]):
-    """
-    设置操作
-    :param operate:
-    :return:
-    """
-    config.OPERATE = operate
+class utils:
+    __VM_INDEX = None
+    __OPERATE = None
+    __MUMU_ROOT_OBJECT = None
 
+    def set_vm_index(self, vm_index):
+        """
+        设置虚拟机索引
+        :param vm_index:
+        :return:
+        """
+        self.__VM_INDEX = vm_index
 
-def run_command(command, mumu=True):
-    """
-    执行命令
-    :param mumu:
-    :param command:
-    :return:
-    """
-    try:
-        if mumu:
-            command_extend = [config.MUMU_PATH]
+        return self
 
-            if config.OPERATE is not None:
-                if isinstance(config.OPERATE, list):
-                    command_extend.extend(config.OPERATE)
-                else:
-                    command_extend.append(config.OPERATE)
+    def set_operate(self, operate: Union[str, list]):
+        """
+        设置操作
+        :param operate:
+        :return:
+        """
+        self.__OPERATE = operate
 
-            if config.VM_INDEX is not None:
-                command_extend.extend(['-v', config.VM_INDEX])
+    def set_mumu_root_object(self, mumu_root_object):
+        """
+        设置mumu_root_object
+        :param mumu_root_object:
+        :return:
+        """
+        self.__MUMU_ROOT_OBJECT = mumu_root_object
+        return self
 
-            command_extend.extend(command)
-        else:
-            command_extend = command
+    def get_mumu_root_object(self):
+        return self.__MUMU_ROOT_OBJECT
 
-        result = subprocess.run(command_extend, shell=True, check=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                                encoding='utf-8')
+    def get_vm_id(self):
+        return self.__VM_INDEX
 
-        ret_code = result.returncode
-        retval = result.stdout
+    def run_command(self, command, mumu=True):
+        """
+        执行命令
+        :param mumu:
+        :param command:
+        :return:
+        """
+        try:
+            if mumu:
+                command_extend = [config.MUMU_PATH]
 
-        # print(retval)
+                if self.__OPERATE is not None:
+                    if isinstance(self.__OPERATE, list):
+                        command_extend.extend(self.__OPERATE)
+                    else:
+                        command_extend.append(self.__OPERATE)
 
-        return ret_code, retval
+                if self.__VM_INDEX is not None:
+                    command_extend.extend(['-v', self.__VM_INDEX])
 
-    except subprocess.CalledProcessError as e:
-        ret_code = e.returncode
-        retval = e.stderr
+                command_extend.extend(command)
+            else:
+                command_extend = command
 
-        return ret_code, retval
+            result = subprocess.run(command_extend, shell=True, check=False, stdout=subprocess.PIPE,
+                                    stderr=subprocess.PIPE,
+                                    encoding='utf-8')
+
+            ret_code = result.returncode
+            retval = result.stdout
+
+            # print(retval)
+
+            return ret_code, retval
+
+        except subprocess.CalledProcessError as e:
+            ret_code = e.returncode
+            retval = e.stderr
+
+            return ret_code, retval

@@ -9,3 +9,5 @@ MUMU_PATH = None
 VM_INDEX = None
 OPERATE = None
 ADB_PATH = None
+FRAME_CACHE = {}
+FRAME_UPDATE_TIME = {}

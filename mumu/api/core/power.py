@@ -4,10 +4,13 @@
 # @Author : wlkjyy
 # @File : power.py
 # @Software: PyCharm
-from mumu import utils
+
 
 
 class Power:
+
+    def __init__(self, utils):
+        self.utils = utils
 
     def start(self, package: str = None) -> bool:
         """
@@ -15,12 +18,12 @@ class Power:
         :param package: 启动时自动启动应用的应用包名
         :return:
         """
-        utils.set_operate('control')
+        self.utils.set_operate('control')
         args = ['launch']
         if package is not None:
             args.extend(['-pkg', package])
 
-        ret_code, retval = utils.run_command(args)
+        ret_code, retval = self.utils.run_command(args)
         if ret_code == 0:
             return True
 
@@ -31,8 +34,8 @@ class Power:
             关闭模拟器(shutdown)
         :return:
         """
-        utils.set_operate('control')
-        ret_code, retval = utils.run_command(['shutdown'])
+        self.utils.set_operate('control')
+        ret_code, retval = self.utils.run_command(['shutdown'])
         if ret_code == 0:
             return True
 
@@ -43,8 +46,8 @@ class Power:
             重启模拟器(restart)
         :return:
         """
-        utils.set_operate('control')
-        ret_code, retval = utils.run_command(['restart'])
+        self.utils.set_operate('control')
+        ret_code, retval = self.utils.run_command(['restart'])
         if ret_code == 0:
             return True
 

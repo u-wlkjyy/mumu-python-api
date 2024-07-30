@@ -8,6 +8,10 @@ from mumu.api.driver.bridge import Bridge
 
 
 class Driver:
+
+    def __init__(self, utils):
+        self.utils = utils
+
     """
         根据官方文档，目前仅支持“网络桥接”驱动
     """
@@ -19,4 +23,4 @@ class Driver:
         :return:
         """
 
-        return Bridge()
+        return Bridge(self.utils)

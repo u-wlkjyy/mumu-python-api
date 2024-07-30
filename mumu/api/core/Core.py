@@ -8,10 +8,11 @@ import json
 import warnings
 from typing import Union
 
-from mumu import utils
-
 
 class Core:
+
+    def __init__(self, utils):
+        self.utils = utils
 
     def create(self, number: int = 1) -> list:
         """
@@ -23,9 +24,9 @@ class Core:
             warnings.warn("The number of simulators created is less than 1")
             number = 1
 
-        utils.set_operate("create")
+        self.utils.set_operate("create")
 
-        ret_code, retval = utils.run_command(["-n", str(number)])
+        ret_code, retval = self.utils.run_command(["-n", str(number)])
 
         if ret_code != 0:
             raise RuntimeError(retval)
@@ -50,9 +51,9 @@ class Core:
             warnings.warn("The number of simulators created is less than 1")
             number = 1
 
-        utils.set_operate("clone")
+        self.utils.set_operate("clone")
 
-        ret_code, retval = utils.run_command(["-n", str(number)])
+        ret_code, retval = self.utils.run_command(["-n", str(number)])
 
         if ret_code != 0:
             raise RuntimeError(retval)
@@ -72,9 +73,9 @@ class Core:
             删除模拟器
         :return:
         """
-        utils.set_operate("delete")
+        self.utils.set_operate("delete")
 
-        ret_code, retval = utils.run_command([])
+        ret_code, retval = self.utils.run_command([])
 
         if ret_code == 0:
             return True
@@ -87,9 +88,9 @@ class Core:
         :param name: 模拟器名称
         :return:
         """
-        utils.set_operate("rename")
+        self.utils.set_operate("rename")
 
-        ret_code, retval = utils.run_command(["-n", name])
+        ret_code, retval = self.utils.run_command(["-n", name])
 
         if ret_code == 0:
             return True
@@ -108,12 +109,12 @@ class Core:
         :return:
         """
 
-        utils.set_operate("export")
+        self.utils.set_operate("export")
         args = ["-d", dir, "-n", name]
         if zip:
             args.append("--zip")
 
-        ret_code, retval = utils.run_command(args)
+        ret_code, retval = self.utils.run_command(args)
         if ret_code == 0:
             return True
 
@@ -130,11 +131,11 @@ class Core:
             warnings.warn("The number of simulators created is less than 1")
             number = 1
 
-        utils.set_operate("import")
-        # ret_code, retval = utils.run_command(["-p", path, "-n", str(number)])
+        self.utils.set_operate("import")
+        # ret_code, retval = self.self.utils.run_command(["-p", path, "-n", str(number)])
 
         if isinstance(path, str):
-            ret_code, retval = utils.run_command(["-p", path, "-n", str(number)])
+            ret_code, retval = self.utils.run_command(["-p", path, "-n", str(number)])
 
         else:
             args = []
@@ -142,7 +143,7 @@ class Core:
                 args.extend(["-p", p])
             args.extend(["-n", str(number)])
 
-            ret_code, retval = utils.run_command(args)
+            ret_code, retval = self.utils.run_command(args)
 
         if ret_code == 0:
             return True
@@ -158,8 +159,8 @@ class Core:
         if cap < 0 or cap > 100:
             raise ValueError("The value of cap must be between 0 and 100")
 
-        utils.set_operate("control")
-        ret_code, retval = utils.run_command(["tool","downcpu","-c", str(cap)])
+        self.utils.set_operate("control")
+        ret_code, retval = self.utils.run_command(["tool", "downcpu", "-c", str(cap)])
 
         if ret_code == 0:
             return True

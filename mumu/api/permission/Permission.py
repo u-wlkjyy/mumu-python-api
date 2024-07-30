@@ -9,7 +9,10 @@ from mumu.api.permission.root import Root
 
 class Permission:
 
+    def __init__(self, utils):
+        self.utils = utils
+
     @property
     def root(self) -> Root:
 
-        return Root()
+        return Root(self.utils)
