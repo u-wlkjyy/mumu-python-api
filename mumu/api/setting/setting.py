@@ -83,7 +83,7 @@ class Setting:
 
             new_key = key
             if '___' in key:
-                new_key = key.replace('__', '-')
+                new_key = key.replace('___', '-')
 
             if '__' in key:
                 new_key = key.replace('__', '.')
