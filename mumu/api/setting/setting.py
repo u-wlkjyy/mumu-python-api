@@ -9,8 +9,6 @@ import os.path
 from typing import Union
 
 
-
-
 class Setting:
 
     def __init__(self, utils):
@@ -144,7 +142,7 @@ class Setting:
 
         return False
 
-    def not_equal_then_set(self, key: str, value, new_value) -> bool:
+    def not_equal_then_set(self, key: str, value, new_value=None) -> bool:
         """
             判断配置项是否不等于某个值并设置新值
         :param key: 配置项
@@ -153,6 +151,8 @@ class Setting:
         :return:
         """
         if self.not_equal(key, value):
+            if new_value is None:
+                return self.set(**{key: value})
             return self.set(**{key: new_value})
 
         return False
